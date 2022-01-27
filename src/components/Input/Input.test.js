@@ -1,7 +1,15 @@
-import React from 'react';
 import { shallow } from 'enzyme';
 import { findByTestAttr } from '../../test/utils';
 import Input from './Input';
+
+  // Mocking to create an spy
+  const mockSetCurrentGuess = jest.fn();
+  // Mocking to change the useState method, allowing to destructuring in the logic code
+  // mocks the entire libray but only overrides the useState method
+  jest.mock('react', () => ({
+    ...jest.requireActual('react'),
+    useState: initialState => [initialState, mockSetCurrentGuess]
+  }));
 
 const setup = customProps => {
   const defaultProps = {
@@ -18,15 +26,9 @@ describe('Input component tests', () => {
   });
 
   it('state updates with valur of input box upon change', async () => {
-    // mocking the useState hook
+    // mocking the useState hook comes above
     // in the actual component it is being used like:
-    // [currentGuess, setCurrentGuess] = React.useState('');
-
-    // Mocking to create an spy
-    const mockSetCurrentGuess = jest.fn();
-    // Mocking to change the useState method
-    React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
-
+    // [currentGuess, setCurrentGuess] = useState('');
     const input = setup();
     const inputField = await findByTestAttr(input, 'input-box');
 

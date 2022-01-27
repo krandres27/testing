@@ -1,8 +1,8 @@
-import React from 'react';
+import { useState } from 'react';
 import Proptypes from 'prop-types';
 
 const Input = ({ secretWord }) => {
-  const [currentGuess, setCurrentGuess] = React.useState('');
+  const [currentGuess, setCurrentGuess] = useState('');
 
   return (
     <div data-test="component-input">
