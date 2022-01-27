@@ -20,16 +20,26 @@ const setup = customProps => {
 }
 
 describe('Input component tests', () => {
+  let input;
+  beforeEach(() => {
+    input = setup();
+  });
+
+  afterAll(() => {
+    mockSetCurrentGuess.mockClear();
+    jest.mock('react', () => ({
+      ...jest.requireActual('react'),
+    }));
+  })
+
   it('renders without error', () => {
-    const input = setup();
     expect(input.length).toBe(1)
   });
 
-  it('state updates with valur of input box upon change', async () => {
+  it('state updates with value of input box upon change', async () => {
     // mocking the useState hook comes above
     // in the actual component it is being used like:
     // [currentGuess, setCurrentGuess] = useState('');
-    const input = setup();
     const inputField = await findByTestAttr(input, 'input-box');
 
     // mocking the value for the onChange event
@@ -38,5 +48,14 @@ describe('Input component tests', () => {
 
     expect(mockSetCurrentGuess).toHaveBeenCalledTimes(1);
     expect(mockSetCurrentGuess).toHaveBeenCalledWith('train');
+  });
+ 
+  it('state clears when submiting the word', async () => {
+    const submitBtn = await findByTestAttr(input, 'submit-button');
+
+    submitBtn.simulate('click', { preventDefault: () => null });
+
+    expect(mockSetCurrentGuess).toHaveBeenCalledTimes(1);
+    expect(mockSetCurrentGuess).toHaveBeenCalledWith('');
   });
 });
