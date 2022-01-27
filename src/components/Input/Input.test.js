@@ -59,3 +59,15 @@ describe('Input component tests', () => {
     expect(mockSetCurrentGuess).toHaveBeenCalledWith('');
   });
 });
+
+describe('conditional rendering', () => {
+  it('hiddes input field and button and show congrats message when success is true', async() => {
+    const input = setup({ success: true });
+
+    const inputField = await findByTestAttr(input, 'input-box');
+    const submitBtn = await findByTestAttr(input, 'submit-btn');
+
+    expect(inputField.exists()).toBeFalsy();
+    expect(submitBtn.length).toBe(0);
+  });
+})
