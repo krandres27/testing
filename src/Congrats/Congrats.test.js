@@ -10,7 +10,7 @@ const setup = customProps => {
   return shallow(<Congrats {...defaultProps} {...customProps} />)
 }
 
-describe('Congrats component test', () => {
+describe('Congrats component tests', () => {
   it('renders without error', () => {
     const congrats = setup();
     expect(congrats.length).toEqual(1); 
