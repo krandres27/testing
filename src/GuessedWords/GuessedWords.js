@@ -9,11 +9,22 @@ const GuessedWords = ({ guessedWords }) => {
   
   if(guessedWords.length) {
     content = (
-      <ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Guess Word</th>
+            <th>Matching Letters</th>
+          </tr>
+        </thead>
+        <tbody>
         {guessedWords.map((word, index) => (
-          <li data-test="guessed-word" key={index}>{word.guessedWord}</li>
+          <tr data-test="guessed-word" key={index}>
+            <td>{word.guessedWord}</td>
+            <td>{word.letterMatchCount}</td>
+          </tr>
         ))}
-      </ul>
+        </tbody>
+      </table>
     )
   }
 
