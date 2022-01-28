@@ -10,7 +10,7 @@ const Input = ({ success, secretWord }) => {
   }
 
   if (success) {
-    return <div data-test="component-input"></div>
+    return null;
   }
 
   return (

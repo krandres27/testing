@@ -1,7 +1,11 @@
-import { Congrats, GuessedWords } from './components'
+import { Congrats, GuessedWords, Input } from './components'
 import './App.css';
 
 function App() {
+  const success = false;
+  const secretWord = 'party';
+  const guessedWords = [];
+
   return (
     <div className="App">
       <header className="App-header">
@@ -9,7 +13,8 @@ function App() {
       </header>
       <div className="jotto-game">
         <Congrats success={false} />
-        <GuessedWords guessedWords={[]} />
+        <Input success={success} secretWord={secretWord} />
+        <GuessedWords guessedWords={guessedWords} />
       </div>
     </div>
   );
