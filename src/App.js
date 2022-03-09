@@ -20,12 +20,12 @@ const reducer = (state, { type, payload }) => {
 function App() {
   const success = false;
   const [state, dispatch] = React.useReducer(reducer, {
-    secretWord: ''
+    secretWord: null
   });
   const guessedWords = [];
 
   const setSecretWord = secretWord => {
-    dispatch({type: types.UPDATE_SECRET_WORD, payload: secretWord})
+    dispatch({type: types.UPDATE_SECRET_WORD, payload: secretWord })
   }
 
   useEffect(() => {
@@ -37,11 +37,19 @@ function App() {
       <header className="App-header">
         <span>Learn React Testing</span>
       </header>
-      <div className="jotto-game">
-        <Congrats success={false} />
-        <Input success={success} secretWord={state.secretWord} />
-        <GuessedWords guessedWords={guessedWords} />
-      </div>
+      {!state.secretWord ? (
+        <div data-test="loading-spinner">
+          Loading...  
+        </div>
+      ) : (
+        <div data-test="component-app">  
+          <div className="jotto-game">
+            <Congrats success={false} />
+            <Input success={success} secretWord={state.secretWord} />
+            <GuessedWords guessedWords={guessedWords} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
