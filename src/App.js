@@ -1,12 +1,32 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Congrats, GuessedWords, Input } from './components'
 import { getSecretWord } from './actions';
 import './App.css';
 
+const types = {
+  UPDATE_SECRET_WORD: 'UPDATE_SECRET_WORD'
+}
+
+const reducer = (state, { type, payload }) => {
+  switch (type) {
+    case types.UPDATE_SECRET_WORD:
+      return {...state, secretWord: payload }
+  
+    default:
+      return state
+  }
+}
+
 function App() {
   const success = false;
-  const [secretWord, setSecretWord] = useState(null);
+  const [state, dispatch] = React.useReducer(reducer, {
+    secretWord: ''
+  });
   const guessedWords = [];
+
+  const setSecretWord = secretWord => {
+    dispatch({type: types.UPDATE_SECRET_WORD, payload: secretWord})
+  }
 
   useEffect(() => {
     getSecretWord(setSecretWord);
@@ -19,7 +39,7 @@ function App() {
       </header>
       <div className="jotto-game">
         <Congrats success={false} />
-        <Input success={success} secretWord={secretWord} />
+        <Input success={success} secretWord={state.secretWord} />
         <GuessedWords guessedWords={guessedWords} />
       </div>
     </div>
