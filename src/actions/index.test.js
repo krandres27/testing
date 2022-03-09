@@ -20,9 +20,12 @@ describe('getSecretWord', () => {
       });
     });
 
-    return getSecretWord()
+    const mockedSetSecretWord = jest.fn()
+
+    return getSecretWord(mockedSetSecretWord)
       .then(res => {
         expect(res).toBe('party')
+        expect(mockedSetSecretWord).toHaveBeenCalledWith('party')
       })
   });
 });
