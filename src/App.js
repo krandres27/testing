@@ -1,32 +1,42 @@
-import React, { useEffect } from 'react';
-import { Congrats, GuessedWords, Input, LanguagePicker } from './components'
-import { getSecretWord } from './actions';
-import './App.css';
+import React, { useEffect } from "react";
+import { languageContext } from "./context";
+import { Congrats, GuessedWords, Input, LanguagePicker } from "./components";
+import { getSecretWord } from "./actions";
+import "./App.css";
 
 const types = {
-  UPDATE_SECRET_WORD: 'UPDATE_SECRET_WORD'
-}
+  UPDATE_SECRET_WORD: "UPDATE_SECRET_WORD",
+  SET_LANGUAGE: "SET_LANGUAGE",
+};
 
 const reducer = (state, { type, payload }) => {
   switch (type) {
     case types.UPDATE_SECRET_WORD:
-      return {...state, secretWord: payload }
-  
+      return { ...state, secretWord: payload };
+
+    case types.SET_LANGUAGE:
+      return { ...state, language: payload };
+
     default:
-      return state
+      return state;
   }
-}
+};
 
 function App() {
   const success = false;
   const [state, dispatch] = React.useReducer(reducer, {
     secretWord: null,
+    language: "en",
   });
   const guessedWords = [];
 
-  const setSecretWord = secretWord => {
-    dispatch({type: types.UPDATE_SECRET_WORD, payload: secretWord })
-  }
+  const setSecretWord = (secretWord) => {
+    dispatch({ type: types.UPDATE_SECRET_WORD, payload: secretWord });
+  };
+
+  const setLanguage = (selectedLanguage) => {
+    dispatch({ type: types.SET_LANGUAGE, payload: selectedLanguage });
+  };
 
   useEffect(() => {
     getSecretWord(setSecretWord);
@@ -38,18 +48,18 @@ function App() {
         <span>Learn React Testing</span>
       </header>
       {!state.secretWord ? (
-        <div data-test="loading-spinner">
-          Loading...  
-        </div>
+        <div data-test="loading-spinner">Loading...</div>
       ) : (
-        <div data-test="component-app">  
-          <div className="jotto-game">
-            <LanguagePicker />
-            <Congrats success={false} />
-            <Input success={success} secretWord={state.secretWord} />
-            <GuessedWords guessedWords={guessedWords} />
+        <languageContext.Provider value={ state.language }>
+          <div data-test="component-app">
+            <div className="jotto-game">
+              <LanguagePicker setLanguage={setLanguage} />
+              <Congrats success={false} />
+              <Input success={success} secretWord={state.secretWord} />
+              <GuessedWords guessedWords={guessedWords} />
+            </div>
           </div>
-        </div>
+        </languageContext.Provider>
       )}
     </div>
   );
