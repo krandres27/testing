@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { languageContext } from "./context";
+import { languageContext, successContext } from "./context";
 import { Congrats, GuessedWords, Input, LanguagePicker } from "./components";
 import { getSecretWord } from "./actions";
 import "./App.css";
@@ -54,7 +54,9 @@ function App() {
           <div data-test="component-app">
             <div className="jotto-game">
               <LanguagePicker setLanguage={setLanguage} />
-              <Congrats success={false} />
+              <successContext.SuccessProvider>
+                <Congrats />
+              </successContext.SuccessProvider>
               <Input success={success} secretWord={state.secretWord} />
               <GuessedWords guessedWords={guessedWords} />
             </div>

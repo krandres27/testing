@@ -1,8 +1,9 @@
 import React from 'react';
-import { languageContext } from '../../context';
+import { languageContext, successContext } from '../../context';
 import strings from '../../helpers/strings/strings'
 
-const Congrats = ({ success }) => {
+const Congrats = () => {
+  const [success] = successContext.useSuccess();
   const language = React.useContext(languageContext);
   
   if (success) {
