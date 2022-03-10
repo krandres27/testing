@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Congrats, GuessedWords, Input } from './components'
+import { Congrats, GuessedWords, Input, LanguagePicker } from './components'
 import { getSecretWord } from './actions';
 import './App.css';
 
@@ -20,7 +20,7 @@ const reducer = (state, { type, payload }) => {
 function App() {
   const success = false;
   const [state, dispatch] = React.useReducer(reducer, {
-    secretWord: null
+    secretWord: null,
   });
   const guessedWords = [];
 
@@ -44,6 +44,7 @@ function App() {
       ) : (
         <div data-test="component-app">  
           <div className="jotto-game">
+            <LanguagePicker />
             <Congrats success={false} />
             <Input success={success} secretWord={state.secretWord} />
             <GuessedWords guessedWords={guessedWords} />
