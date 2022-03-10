@@ -26,7 +26,7 @@ function App() {
   const success = false;
   const [state, dispatch] = React.useReducer(reducer, {
     secretWord: null,
-    language: "en",
+    language: 'en',
   });
   const guessedWords = [];
 

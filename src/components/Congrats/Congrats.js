@@ -1,9 +1,15 @@
+import React from 'react';
+import { languageContext } from '../../context';
+import strings from '../../helpers/strings/strings'
+
 const Congrats = ({ success }) => {
+  const language = React.useContext(languageContext);
+  
   if (success) {
     return (
       <div data-test="component-congrats">
         <span data-test="congrats-message">
-          Congrats! you guessed the word!
+          {strings.getStringByLanguage(language, 'congrats')}
         </span>
       </div>
     );
