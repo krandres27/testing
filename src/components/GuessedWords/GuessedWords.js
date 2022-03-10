@@ -1,9 +1,14 @@
+import React from 'react';
 import Proptypes from 'prop-types';
+import stringsMethods from '../../helpers/strings/strings';
+import { languageContext } from '../../context';
 
 const GuessedWords = ({ guessedWords }) => {
+  const language = React.useContext(languageContext);
+
   let content = (
     <span data-test="guess-instructions">
-      Try to guess the secret word!
+      {stringsMethods.getStringByLanguage(language, 'guessPrompt')}
     </span>
   )
   
