@@ -1,12 +1,27 @@
 import { useState } from 'react';
 import Proptypes from 'prop-types';
+import { guessedWordsContext, successContext } from '../../context';
+import letterMatchCount from '../../helpers/letterMatchCount/letterMatchCount'
 
-const Input = ({ success, secretWord }) => {
+const Input = ({ secretWord }) => {
   const [currentGuess, setCurrentGuess] = useState('');
+  const [success, setSuccess] = successContext.useSuccess();
+  const [, setGuessedWords] = guessedWordsContext.useGuessedWords();
 
   const submitHandler = e => {
     e.preventDefault();
     setCurrentGuess('');
+    setGuessedWords((prevGuesses) => [
+      ...prevGuesses,
+      {
+        guessedWord: currentGuess,
+        letterMatchCount: letterMatchCount(currentGuess, secretWord),
+      },
+    ]);
+    
+    if (currentGuess.toLowerCase() === secretWord.toLowerCase()) {
+      setSuccess(true);
+    }
   }
 
   if (success) {

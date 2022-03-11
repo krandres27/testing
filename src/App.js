@@ -23,7 +23,6 @@ const reducer = (state, { type, payload }) => {
 };
 
 function App() {
-  const success = false;
   const [state, dispatch] = React.useReducer(reducer, {
     secretWord: null,
     language: 'en',
@@ -56,7 +55,7 @@ function App() {
               <successContext.SuccessProvider>
                 <Congrats />
                 <guessedWordsContext.GuessedWordsProvider>
-                  <Input success={success} secretWord={state.secretWord} />
+                  <Input secretWord={state.secretWord} />
                   <GuessedWords />
                 </guessedWordsContext.GuessedWordsProvider>
               </successContext.SuccessProvider>

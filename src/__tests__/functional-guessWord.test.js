@@ -1,45 +1,51 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { findByTestAttr } from '../test/utils';
-import App from '../App';
+import { guessedWordsContext, successContext } from '../context';
+import { Congrats, Input, GuessedWords } from '../components';
 
-const setup = async(state = {}) => {
-  const app = mount(<App />);
+const setup = async({ guessedWords = [], secretWord = 'party' }) => {
+  const app = mount(
+    <successContext.SuccessProvider>
+      <Congrats />
+      <guessedWordsContext.GuessedWordsProvider>
+        <Input secretWord={secretWord} />
+        <GuessedWords />
+      </guessedWordsContext.GuessedWordsProvider>
+    </successContext.SuccessProvider>
+  );
 
-  // add value to input box
   const inputBox = await findByTestAttr(app, 'input-box');
-  inputBox.simulate('change', { taget: { value: 'train' } });
-
-  // simulate click on submit button
   const submitBtn =  await findByTestAttr(app, 'submit-button');
-  submitBtn.simulate('click', { preventDefault: () => null });
+  
+  guessedWords.forEach(guess => {
+    const mockEvent = { target: { value: guess.guessedWord }};
+    // add value to input box
+    inputBox.simulate('change', mockEvent);
+    // simulate click on submit button
+    submitBtn.simulate('click', { preventDefault: () => null });
+  })
 
   return app;
 }
 
-describe.skip('no words guessed', () => {
+describe('no words guessed', () => {
   let app;
   
   beforeEach(async() => {
-    app = await setup({
-      secretWord: 'party',
-      success: false,
-      guessedWords: [],
-    });
+    app = await setup({});
   });
   
-  it('creates GuessedWords table with one row', async() => {
+  it('creates GuessedWords table with no roww', async() => {
     const guessedWords = await findByTestAttr(app, 'guessed-word');
-    expect(guessedWords.length).toBe(1);
+    expect(guessedWords.length).toBe(0);
   });
 });
 
-describe.skip('some words guessed', () => {
+describe('some words guessed', () => {
   let app;
   beforeEach(async() => {
     app = await setup({
-      secretWord: 'party',
-      success: false,
       guessedWords: [
         { guessedWord: 'dummy', letterMatchCount: 1 },
         { guessedWord: 'agile', letterMatchCount: 1 },
@@ -47,29 +53,26 @@ describe.skip('some words guessed', () => {
     });
   });
 
-  it('creates GuessedWords table with three rows', async() => {
+  it('creates GuessedWords table with two rows', async() => {
     const guessedWordsNodes = await findByTestAttr(app, 'guessed-word');
-    expect(guessedWordsNodes.length).toBe(3);
+    expect(guessedWordsNodes.length).toBe(2);
   });
 });
 
-describe.skip('secret word guessed', () => {
+describe('Secret word guessed', () => {
   let app;
 
   beforeEach(async() => {
     app = await setup({
-      secretWord: 'party',
-      success: false,
       guessedWords: [
         { guessedWord: 'dummy', letterMatchCount: 1 },
         { guessedWord: 'agile', letterMatchCount: 1 },
       ],
     });
-
 
     // add value to input box
     const inputBox = await findByTestAttr(app, 'input-box');
-    inputBox.simulate('change', { taget: { value: 'party' } });
+    inputBox.simulate('change', { target: { value: 'party' } });
 
     // simulate click on submit button
     const submitBtn =  await findByTestAttr(app, 'submit-button');
@@ -78,12 +81,12 @@ describe.skip('secret word guessed', () => {
 
   it('creates GuessedWords table with three rows', async() => {
     const guessedWordsNodes = await findByTestAttr(app, 'guessed-word');
-    expect(guessedWordsNodes.length).toBe(4);
+    expect(guessedWordsNodes.length).toBe(3);
   });
   
-  it('show the congrats component', async() => {
+  it('shows the congrats component', async() => {
     const congrats = await findByTestAttr(app, 'component-congrats');
-    expect(congrats.length).toBe(1);
+    expect(congrats.exists()).toBe(true);
   });
   
   it('hides the input component', async() => {
