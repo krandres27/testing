@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { languageContext, successContext } from "./context";
+import { languageContext, successContext, guessedWordsContext } from "./context";
 import { Congrats, GuessedWords, Input, LanguagePicker } from "./components";
 import { getSecretWord } from "./actions";
 import "./App.css";
@@ -28,7 +28,6 @@ function App() {
     secretWord: null,
     language: 'en',
   });
-  const guessedWords = [];
 
   const setSecretWord = (secretWord) => {
     dispatch({ type: types.UPDATE_SECRET_WORD, payload: secretWord });
@@ -56,9 +55,11 @@ function App() {
               <LanguagePicker setLanguage={setLanguage} />
               <successContext.SuccessProvider>
                 <Congrats />
+                <guessedWordsContext.GuessedWordsProvider>
+                  <Input success={success} secretWord={state.secretWord} />
+                  <GuessedWords />
+                </guessedWordsContext.GuessedWordsProvider>
               </successContext.SuccessProvider>
-              <Input success={success} secretWord={state.secretWord} />
-              <GuessedWords guessedWords={guessedWords} />
             </div>
           </div>
         </languageContext.Provider>

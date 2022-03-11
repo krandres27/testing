@@ -1,9 +1,10 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 import stringsMethods from '../../helpers/strings/strings';
-import { languageContext } from '../../context';
+import { languageContext, guessedWordsContext } from '../../context';
 
-const GuessedWords = ({ guessedWords }) => {
+const GuessedWords = () => {
+  const [guessedWords] = guessedWordsContext.useGuessedWords()
   const language = React.useContext(languageContext);
 
   let content = (
